@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>"Todo App"</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <header></header>
-    <main></main>
-    <footer></footer>
+    <div class="container">
+      <header>
+        <h1>Todo App</h1>
+      </header>
+
+      <main>
+        <div class="input-section">
+        <input id="taskInput" placeholder="Enter a task">
+        <button onclick="addTask()">Add</button>
+        </div>
+
+        <ul id="taskList"></ul>
+      </main>
+    </div>
+    <script src="script.js"></script>
+      
   </body>
 </html>
