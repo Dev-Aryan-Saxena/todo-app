@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Todo App</title>
+<meta charset="UTF-8">
+<title>ToDo</title>
+
 <link rel="stylesheet" href="style.css">
+
+<!-- Drag & Drop Library -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
 </head>
 
 <body>
 
-<div class="container">
+<button id="darkModeToggle">🌙</button>
 
-<h1>My Tasks</h1>
+<div class="dashboard">
+
+<div class="left-panel">
+
+<h2>Tasks</h2>
 
 <div class="input-section">
-<input id="taskInput" placeholder="Add a new task...">
+<input id="taskInput" placeholder="Add task">
 <button id="addBtn">Add</button>
 </div>
-
-<ul id="taskList"></ul>
-
-<div class="footer">
-
-<span id="taskCounter">0 tasks</span>
 
 <div class="filters">
 <button onclick="setFilter('all')">All</button>
@@ -28,14 +32,31 @@
 <button onclick="setFilter('completed')">Completed</button>
 </div>
 
+<ul id="taskList"></ul>
+
+<div class="footer">
+<span id="taskCounter">0 tasks left</span>
 </div>
 
-<button id="darkModeToggle">🌙</button>
+</div>
+
+<div class="right-panel">
+
+<div class="widget">
+<h3>Today's Focus</h3>
+<p id="focusText">No focus task</p>
+</div>
+
+<div class="widget">
+<h3>Stats</h3>
+<p>Total Tasks: <span id="totalTasks">0</span></p>
+<p>Completed: <span id="completedTasks">0</span></p>
+</div>
 
 </div>
 
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="script.js"></script>
 
 </body>

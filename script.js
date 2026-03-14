@@ -1,14 +1,10 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
 let filter = "all";
 
 const input = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
-
-const toggle=document.getElementById("darkModeToggle");
-toggle.onclick=function(){
-document.body.classList.toggle("dark");
-
-}
+const taskList = document.getElementById("taskList");
 
 addBtn.addEventListener("click", addTask);
 
@@ -37,6 +33,7 @@ completed:false
 });
 
 input.value="";
+
 saveTasks();
 renderTasks();
 
@@ -44,8 +41,7 @@ renderTasks();
 
 function renderTasks(){
 
-const list=document.getElementById("taskList");
-list.innerHTML="";
+taskList.innerHTML="";
 
 let filteredTasks = tasks.filter(task=>{
 if(filter==="active") return !task.completed;
@@ -95,6 +91,14 @@ li.replaceChild(editInput,span);
 
 };
 
+span.oncontextmenu=function(e){
+
+e.preventDefault();
+
+document.getElementById("focusText").innerText = task.text;
+
+};
+
 let del=document.createElement("button");
 del.innerText="X";
 
@@ -111,7 +115,7 @@ li.appendChild(checkbox);
 li.appendChild(span);
 li.appendChild(del);
 
-list.appendChild(li);
+taskList.appendChild(li);
 
 });
 
@@ -125,9 +129,17 @@ let count = tasks.filter(t=>!t.completed).length;
 
 document.getElementById("taskCounter").innerText = count + " tasks left";
 
+document.getElementById("totalTasks").innerText = tasks.length;
+
+document.getElementById("completedTasks").innerText =
+tasks.filter(t=>t.completed).length;
+
 }
 
+renderTasks();
+
 const sortable = new Sortable(taskList, {
+
 animation:150,
 
 onEnd:function(evt){
@@ -139,6 +151,13 @@ tasks.splice(evt.newIndex,0,movedTask);
 saveTasks();
 
 }
+
 });
 
-renderTasks();
+const toggle=document.getElementById("darkModeToggle");
+
+toggle.onclick=function(){
+
+document.body.classList.toggle("dark");
+
+};
