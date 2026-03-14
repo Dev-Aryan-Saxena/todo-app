@@ -127,4 +127,18 @@ document.getElementById("taskCounter").innerText = count + " tasks left";
 
 }
 
+const sortable = new Sortable(taskList, {
+animation:150,
+
+onEnd:function(evt){
+
+const movedTask = tasks.splice(evt.oldIndex,1)[0];
+
+tasks.splice(evt.newIndex,0,movedTask);
+
+saveTasks();
+
+}
+});
+
 renderTasks();
