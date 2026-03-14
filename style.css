@@ -45,7 +45,7 @@ button:hover{
 opacity:0.9;
 }
 
-li{
+/* li{ 
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -53,6 +53,7 @@ padding:10px;
 border-bottom:1px solid #eee;
 cursor:pointer;
 }
+*/
 
 .footer{
 display:flex;
@@ -63,4 +64,38 @@ margin-top:15px;
 .filters button{
 background:#ddd;
 color:black;
+}
+
+li{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+border-bottom:1px solid #eee;
+}
+
+li span{
+flex:1;
+}
+
+li button{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:5px;
+}
+
+.dark{
+background:#1e1e1e;
+color:white;
+}
+
+.dark .container{
+background:#2a2a2a;
+}
+
+.dark button{
+background:#555;
+color:white;
 }
