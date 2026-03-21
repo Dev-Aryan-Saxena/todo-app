@@ -115,3 +115,17 @@ background:#2a2a2a;
 background:#555;
 color:white;
 }
+
+.kanban{
+display:flex;
+gap:15px;
+margin-top:20px;
+}
+
+.column{
+flex:1;
+background:#eee;
+padding:10px;
+border-radius:10px;
+min-height:200px;
+}

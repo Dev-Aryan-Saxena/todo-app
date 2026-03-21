@@ -20,7 +20,8 @@ if(input.value.trim()==="") return;
 tasks.push({
 id: Date.now(),
 text: input.value,
-completed: false
+completed: false,
+status:"todo"
 });
 
 input.value="";
@@ -53,6 +54,23 @@ renderTasks();
 function setFilter(type){
 filter = type;
 renderTasks();
+}
+
+function renderKanban(){
+
+["todo","doing","done"].forEach(status=>{
+document.getElementById(status).innerHTML = `<h3>${status}</h3>`;
+});
+
+tasks.forEach(task=>{
+
+let div = document.createElement("div");
+div.innerText = task.text;
+div.className = "kanban-task";
+
+document.getElementById(task.status).appendChild(div);
+
+});
 }
 
 // ================= UI =================
@@ -115,6 +133,7 @@ taskList.appendChild(li);
 });
 
 updateStats();
+renderKanban();
 }
 
 // ================= STATS =================
@@ -147,11 +166,23 @@ document.body.classList.toggle("dark");
 renderTasks();
 
 // ================= DRAG =================
-new Sortable(taskList, {
+["todo","doing","done"].forEach(col => {
+
+new Sortable(document.getElementById(col), {
+group:"kanban",
 animation:150,
-onEnd: function(evt){
-const moved = tasks.splice(evt.oldIndex,1)[0];
-tasks.splice(evt.newIndex,0,moved);
+
+onAdd:function(evt){
+
+let text = evt.item.innerText;
+
+tasks = tasks.map(t =>
+t.text === text ? {...t, status: col} : t
+);
+
 saveTasks();
 }
+
+});
+
 });
