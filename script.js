@@ -1,21 +1,53 @@
+// ================= STATE =================
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
 let filter = "all";
 
+// ================= SELECTORS =================
 const input = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
+const toggle = document.getElementById("darkModeToggle");
 
-addBtn.addEventListener("click", addTask);
-
-input.addEventListener("keypress", function(e){
-if(e.key==="Enter"){
-addTask();
-}
-});
-
+// ================= STORAGE =================
 function saveTasks(){
 localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// ================= LOGIC =================
+function addTask(){
+if(input.value.trim()==="") return;
+
+tasks.push({
+id: Date.now(),
+text: input.value,
+completed: false
+});
+
+input.value="";
+saveTasks();
+renderTasks();
+}
+
+function deleteTask(id){
+tasks = tasks.filter(task => task.id !== id);
+saveTasks();
+renderTasks();
+}
+
+function toggleTask(id){
+tasks = tasks.map(task =>
+task.id === id ? {...task, completed: !task.completed} : task
+);
+saveTasks();
+renderTasks();
+}
+
+function editTask(id, newText){
+tasks = tasks.map(task =>
+task.id === id ? {...task, text: newText} : task
+);
+saveTasks();
+renderTasks();
 }
 
 function setFilter(type){
@@ -23,22 +55,7 @@ filter = type;
 renderTasks();
 }
 
-function addTask(){
-
-if(input.value.trim()==="") return;
-
-tasks.push({
-text:input.value,
-completed:false
-});
-
-input.value="";
-
-saveTasks();
-renderTasks();
-
-}
-
+// ================= UI =================
 function renderTasks(){
 
 taskList.innerHTML="";
@@ -49,67 +66,45 @@ if(filter==="completed") return task.completed;
 return true;
 });
 
-filteredTasks.forEach((task)=>{
+filteredTasks.forEach(task => {
 
-let li=document.createElement("li");
+let li = document.createElement("li");
 
-let checkbox=document.createElement("input");
+let checkbox = document.createElement("input");
 checkbox.type="checkbox";
-checkbox.checked=task.completed;
+checkbox.checked = task.completed;
 
-checkbox.onchange=function(){
+checkbox.onchange = () => toggleTask(task.id);
 
-task.completed=!task.completed;
-
-saveTasks();
-renderTasks();
-
-};
-
-let span=document.createElement("span");
-span.innerText=task.text;
+let span = document.createElement("span");
+span.innerText = task.text;
 
 if(task.completed){
 span.style.textDecoration="line-through";
 }
 
-span.ondblclick=function(){
+// edit
+span.ondblclick = () => {
+let editInput = document.createElement("input");
+editInput.value = task.text;
 
-let editInput=document.createElement("input");
-editInput.value=task.text;
-
-editInput.onblur=function(){
-
-task.text=editInput.value;
-
-saveTasks();
-renderTasks();
-
+editInput.onblur = () => {
+editTask(task.id, editInput.value);
 };
 
-li.replaceChild(editInput,span);
-
+li.replaceChild(editInput, span);
 };
 
-span.oncontextmenu=function(e){
-
+// focus task
+span.oncontextmenu = (e) => {
 e.preventDefault();
-
 document.getElementById("focusText").innerText = task.text;
-
 };
 
-let del=document.createElement("button");
-del.innerText="X";
+let del = document.createElement("button");
+del.innerText = "X";
 
-del.onclick=function(){
-
-tasks = tasks.filter(t => t !== task);
-
-saveTasks();
-renderTasks();
-
-};
+del.onclick = () => deleteTask(task.id);
 
 li.appendChild(checkbox);
 li.appendChild(span);
@@ -119,15 +114,16 @@ taskList.appendChild(li);
 
 });
 
-updateCounter();
-
+updateStats();
 }
 
-function updateCounter(){
+// ================= STATS =================
+function updateStats(){
 
-let count = tasks.filter(t=>!t.completed).length;
+let active = tasks.filter(t=>!t.completed).length;
 
-document.getElementById("taskCounter").innerText = count + " tasks left";
+document.getElementById("taskCounter").innerText =
+active + " tasks left";
 
 document.getElementById("totalTasks").innerText = tasks.length;
 
@@ -136,28 +132,26 @@ tasks.filter(t=>t.completed).length;
 
 }
 
-renderTasks();
+// ================= EVENTS =================
+addBtn.addEventListener("click", addTask);
 
-const sortable = new Sortable(taskList, {
-
-animation:150,
-
-onEnd:function(evt){
-
-const movedTask = tasks.splice(evt.oldIndex,1)[0];
-
-tasks.splice(evt.newIndex,0,movedTask);
-
-saveTasks();
-
-}
-
+input.addEventListener("keypress", (e)=>{
+if(e.key==="Enter") addTask();
 });
 
-const toggle=document.getElementById("darkModeToggle");
-
-toggle.onclick=function(){
-
+toggle.onclick = () => {
 document.body.classList.toggle("dark");
-
 };
+
+// ================= INIT =================
+renderTasks();
+
+// ================= DRAG =================
+new Sortable(taskList, {
+animation:150,
+onEnd: function(evt){
+const moved = tasks.splice(evt.oldIndex,1)[0];
+tasks.splice(evt.newIndex,0,moved);
+saveTasks();
+}
+});
