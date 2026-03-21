@@ -1,6 +1,29 @@
+:root{
+--bg:#f1f3f6;
+--card:#ffffff;
+--text:#000;
+--border:#ddd;
+
+--todo:#e3f2fd;
+--doing:#fff3cd;
+--done:#d4edda;
+}
+
+.dark{
+--bg:#121212;
+--card:#1e1e1e;
+--text:#ffffff;
+--border:#333;
+
+--todo:#1e3a5f;
+--doing:#5c4a1e;
+--done:#1e4d2b;
+}
+
 body{
 font-family:Arial;
-background:#f1f3f6;
+background:var(--bg);
+color:var(--text);
 margin:0;
 padding:20px;
 }
@@ -12,13 +35,13 @@ max-width:900px;
 margin:auto;
 }
 
-.left-panel{
-flex:2;
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+.left-panel,
+.widget{
+background:var(--card);
+border:1px solid var(--border);
 }
+
+
 
 .right-panel{
 flex:1;
@@ -27,11 +50,10 @@ flex-direction:column;
 gap:20px;
 }
 
+.left-panel,
 .widget{
-background:white;
-padding:15px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+background:var(--card);
+border:1px solid var(--border);
 }
 
 .input-section{
@@ -112,7 +134,7 @@ background:#2a2a2a;
 }
 
 .dark button{
-background:#555;
+background:#333;
 color:white;
 }
 
@@ -124,8 +146,37 @@ margin-top:20px;
 
 .column{
 flex:1;
-background:#eee;
+padding:12px;
+border-radius:12px;
+min-height:250px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+/* Column Colors */
+#todo{
+background:var(--todo);
+}
+
+#doing{
+background:var(--doing);
+}
+
+#done{
+background:var(--done);
+}
+
+/* Task Card */
+.kanban-task{
+background:var(--card);
 padding:10px;
-border-radius:10px;
-min-height:200px;
+border-radius:8px;
+cursor:grab;
+border:1px solid var(--border);
+transition:0.2s;
+}
+
+.kanban-task:hover{
+transform:scale(1.02);
 }

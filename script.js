@@ -59,7 +59,7 @@ renderTasks();
 function renderKanban(){
 
 ["todo","doing","done"].forEach(status=>{
-document.getElementById(status).innerHTML = `<h3>${status}</h3>`;
+document.getElementById(status).innerHTML = `<h3>${status.toUpperCase()}</h3>`;
 });
 
 tasks.forEach(task=>{
@@ -67,11 +67,28 @@ tasks.forEach(task=>{
 let div = document.createElement("div");
 div.innerText = task.text;
 div.className = "kanban-task";
+div.dataset.id = task.id;
 
-document.getElementById(task.status).appendChild(div);
+document.getElementById(task.status || "todo").appendChild(div);
 
 });
 }
+
+// persist dark mode
+if(localStorage.getItem("darkMode")==="true"){
+document.body.classList.add("dark");
+}
+
+toggle.onclick = () => {
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"darkMode",
+document.body.classList.contains("dark")
+);
+
+};
 
 // ================= UI =================
 function renderTasks(){
@@ -174,13 +191,15 @@ animation:150,
 
 onAdd:function(evt){
 
-let text = evt.item.innerText;
+let id = Number(evt.item.dataset.id);
 
 tasks = tasks.map(t =>
-t.text === text ? {...t, status: col} : t
+t.id === id ? {...t, status: col} : t
 );
 
 saveTasks();
+renderTasks();
+
 }
 
 });
