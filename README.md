@@ -33,14 +33,14 @@ This project combines task management, drag-and-drop workflows, and a clean UI i
 
 ## 📸 Preview
     
+<img width="1919" height="932" alt="image" src="https://github.com/user-attachments/assets/7fc8b770-828c-44b0-b1bf-9db3ecc16c53" />
 
 
 ---
 
 
 ## 🌐 Live Demo
-https://yourusername.github.io/todo-app
-
+https://dev-aryan-saxena.github.io/todo-app
 
 ## ⚙️ How to Run Locally
 
